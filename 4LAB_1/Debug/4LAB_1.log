@@ -1,0 +1,7 @@
+﻿  Iterator.cpp
+  Queue.cpp
+  RB_Tree.cpp
+  Source.cpp
+  Создание кода...
+C:\Users\alexp\Desktop\АлгСтр\4сем\LAB_1\4LAB_1\Source.cpp(5,1): warning C4326:  возвращаемый тип "main" должен быть "int", а не "void"
+  4LAB_1.vcxproj -> C:\Users\alexp\Desktop\АлгСтр\4сем\LAB_1\4LAB_1\Debug\4LAB_1.exe
