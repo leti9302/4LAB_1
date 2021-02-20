@@ -123,13 +123,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Iterator.h" />
     <ClInclude Include="RB_Tree.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Iterator.cpp" />
-    <ClCompile Include="Queue.cpp" />
-    <ClCompile Include="RB_Tree.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
