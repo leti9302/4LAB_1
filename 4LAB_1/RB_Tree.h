@@ -35,7 +35,7 @@ public:
 	RB_Tree();
 	~RB_Tree();
 
-	void insert(T key, T value);
+	void insert(T, T);
 	void insertRecovery(Node<T>*); //Recover the characteristics of Red-Black Tree after adding a node
 	void leftRotate(Node<T>*);
 	void rightRotate(Node<T>*);
@@ -43,10 +43,10 @@ public:
 	void removeRecovery(Node<T>*); //Recover the characteristics of Red-Black Tree after deleting a node
 	T find(T);
 	void clear();
-	std::list<T> get_keys();
-	void get_next_key(std::list<T>*,Node<T>* current); // Get next key to add in the list
-	std::list<T> get_values();
-	void get_next_value(std::list<T>*, Node<T>* current); // Get next value of the node to add in the list
+	list<T> get_keys();
+	void get_next_key(list<T>*,Node<T>*); // Get next key to add in the list
+	list<T> get_values();
+	void get_next_value(list<T>*, Node<T>*); // Get next value of the node to add in the list
 	void print(Node<T>* current = nullptr);
 	char color(T); // Get color of the node by key
 };
@@ -413,16 +413,16 @@ void RB_Tree<T>::clear()
 }
 
 template<typename T>
-std::list<T> RB_Tree<T>::get_keys()
+list<T> RB_Tree<T>::get_keys()
 {
-	std::list<T>keys;
+	list<T>keys;
 	Node<T>* current = root;
 	get_next_key(&keys, current);
 	return keys;
 }
 
 template<class T>
-void RB_Tree<T>::get_next_key(std::list<T>* keys, Node<T>* current)
+void RB_Tree<T>::get_next_key(list<T>* keys, Node<T>* current)
 {
 	if (current != nil)
 	{
@@ -433,16 +433,16 @@ void RB_Tree<T>::get_next_key(std::list<T>* keys, Node<T>* current)
 }
 
 template<typename T>
-std::list<T> RB_Tree<T>::get_values()
+list<T> RB_Tree<T>::get_values()
 {
-	std::list<T>values;
+	list<T>values;
 	Node<T>* current = root;
 	get_next_value(&values, current);
 	return values;
 }
 
 template<typename T>
-void RB_Tree<T>::get_next_value(std::list<T>* values, Node<T>* current)
+void RB_Tree<T>::get_next_value(list<T>* values, Node<T>* current)
 {
 	if (current != nil)
 	{
