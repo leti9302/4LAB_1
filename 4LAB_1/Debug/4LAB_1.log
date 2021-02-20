@@ -1,4 +1,3 @@
 ﻿  Source.cpp
 C:\Users\alexp\Desktop\АлгСтр\4сем\LAB_1\4LAB_1\Source.cpp(4,1): warning C4326:  возвращаемый тип "main" должен быть "int", а не "void"
-  LINK : не найден или не выполнена сборка C:\Users\alexp\Desktop\АлгСтр\4сем\LAB_1\4LAB_1\Debug\4LAB_1.exe при последней инкрементной компоновке; выполняется полная компоновка
   4LAB_1.vcxproj -> C:\Users\alexp\Desktop\АлгСтр\4сем\LAB_1\4LAB_1\Debug\4LAB_1.exe

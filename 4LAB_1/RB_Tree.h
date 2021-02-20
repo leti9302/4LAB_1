@@ -4,7 +4,7 @@
 using namespace std;
 
 template <class T>
-class RB_Tree
+class RB_Tree //Red–black tree
 {
 private:
 	template<typename T>
@@ -14,10 +14,10 @@ private:
 		Node(T key, T value, Node<T>* left = nullptr, Node<T>* right = nullptr, Node<T>* parent = nullptr, char color = 'r') {
 			this->key = key;
 			this->value = value;
-			this->color = color;
 			this->left = left;
 			this->right = right;
 			this->parent = parent;
+			this->color = color;
 		};
 		~Node() {};
 
@@ -30,27 +30,28 @@ private:
 	};
 
 	Node<T>* root;
-	Node<T>* nil;
+	Node<T>* nil;// Leaf node
 public:
 	RB_Tree();
 	~RB_Tree();
 
 	void insert(T key, T value);
-	void insertRecovery(Node<T>*);
+	void insertRecovery(Node<T>*); //Recover the characteristics of Red-Black Tree after adding a node
 	void leftRotate(Node<T>*);
 	void rightRotate(Node<T>*);
 	void remove(T);
-	void removeRecovery(Node<T>*);
+	void removeRecovery(Node<T>*); //Recover the characteristics of Red-Black Tree after deleting a node
 	T find(T);
 	void clear();
 	std::list<T> get_keys();
-	void get_next_key(std::list<T>*,Node<T>* current);
+	void get_next_key(std::list<T>*,Node<T>* current); // Get next key to add in the list
 	std::list<T> get_values();
-	void get_next_value(std::list<T>*, Node<T>* current);
+	void get_next_value(std::list<T>*, Node<T>* current); // Get next value of the node to add in the list
 	void print(Node<T>* current = nullptr);
-	char color(T);
+	char color(T); // Get color of the node by key
 };
 
+//Constructor
 template<typename T>
 RB_Tree<T>::RB_Tree()
 {
@@ -58,6 +59,7 @@ RB_Tree<T>::RB_Tree()
 	root = nil;
 }
 
+//Destructor
 template<typename T>
 RB_Tree<T>::~RB_Tree()
 {
@@ -68,7 +70,7 @@ RB_Tree<T>::~RB_Tree()
 template<typename T>
 void RB_Tree<T>::insert(T key, T value)
 {
-	if (root == nil)
+	if (root == nil) // If tree is empty
 	{
 		root = new Node<T>(key, value, nil, nil, nullptr, 'b');
 		return;
@@ -76,7 +78,7 @@ void RB_Tree<T>::insert(T key, T value)
 	else {
 		Node<T>* current = root;
 		bool to_right = false;
-		while (1)
+		while (1) //Searching for the place to insert a new node
 		{
 			if (current->key >= key && current->left != nil)
 				current = current->left;
@@ -112,18 +114,21 @@ void RB_Tree<T>::insertRecovery(Node<T>* newNode)
 		gP = p->parent;
 		if (p == gP->left)
 		{
+			// Case 1
 			if (gP->right->color == 'r') {
 				gP->left->color = 'b';
 				gP->right->color = 'b';
 				gP->color = 'r';
 				newNode = gP;
 			}
+			// Case 2
 			else {
 				if (newNode == p->right)
 				{
 					newNode = p;
 					leftRotate(newNode);
 				}
+			// Case 3
 				newNode->parent->color = 'b';
 				newNode->parent->parent->color = 'r';
 				rightRotate(newNode->parent->parent);
@@ -215,7 +220,7 @@ template<typename T>
 void RB_Tree<T>::remove(T key)
 {
 	Node<T>* current = root;
-	Node<T>* x, * nodeToBeDeleted, * min;
+	Node<T>* x, * nodeToBeDeleted, *min;
 	while (current != nil)
 	{
 		if (current->key == key) break;
@@ -224,7 +229,8 @@ void RB_Tree<T>::remove(T key)
 		else current = current->right;
 	}
 
-	if (current == nil) {
+	if (current == nil) // If element was not found
+	{
 		throw "There is no such element!";
 	}
 
@@ -260,7 +266,7 @@ void RB_Tree<T>::remove(T key)
 		}
 		else {
 			min = current->right;
-			while (min->left != nil) min = min->left;
+			while (min->left != nil) min = min->left; // Searching for the minimal node from the right
 			nodeToBeDeleted = min;
 			originalColor = nodeToBeDeleted->color;
 			x = nodeToBeDeleted->right;
@@ -297,7 +303,8 @@ void RB_Tree<T>::remove(T key)
 			nodeToBeDeleted->color = current->color;
 		}
 		delete current;
-		if (originalColor == 'b') {
+		if (originalColor == 'b')
+		{
 			removeRecovery(x);
 		}
 	}
@@ -312,6 +319,7 @@ void RB_Tree<T>::removeRecovery(Node<T>* x)
 		if (x->parent->left == x)
 		{
 			bro = x->parent->right;
+			// Case 1
 			if (bro->color == 'r')
 			{
 				bro->color = 'b';
@@ -319,20 +327,23 @@ void RB_Tree<T>::removeRecovery(Node<T>* x)
 				leftRotate(x->parent);
 				bro = x->parent->right;
 			}
+			// Case 2
 			if (bro->left->color == 'b' && bro->right->color == 'b')
 			{
 				bro->color = 'r';
 				x = x->parent;
 			}
+			// Case 3
+			else if (bro->right->color == 'b')
+			{
+				bro->left->color = 'b';
+				bro->color = 'r';
+				rightRotate(bro);
+				bro = x->parent->right;
+			}
 			else
 			{
-				if (bro->right->color == 'b')
-				{
-					bro->left->color = 'b';
-					bro->color = 'r';
-					rightRotate(bro);
-					bro = x->parent->right;
-				}
+			// Case 4
 				bro->color = x->parent->color;
 				x->parent->color = 'b';
 				bro->right->color = 'b';
@@ -343,6 +354,7 @@ void RB_Tree<T>::removeRecovery(Node<T>* x)
 		else
 		{
 			bro = x->parent->left;
+			// Case 1
 			if (bro->color == 'r')
 			{
 				bro->color = 'b';
@@ -350,20 +362,23 @@ void RB_Tree<T>::removeRecovery(Node<T>* x)
 				rightRotate(x->parent);
 				bro = x->parent->left;
 			}
+			// Case 2
 			if (bro->left->color == 'b' && bro->right->color == 'b')
 			{
 				bro->color = 'r';
 				x = x->parent;
 			}
+			// Case 3
+			else if (bro->left->color == 'b')
+			{
+				bro->right->color = 'b';
+				bro->color = 'r';
+				leftRotate(bro);
+				bro = x->parent->left;
+			}
+			// Case 4
 			else
 			{
-				if (bro->left->color == 'b')
-				{
-					bro->right->color = 'b';
-					bro->color = 'r';
-					leftRotate(bro);
-					bro = x->parent->left;
-				}
 				bro->color = x->parent->color;
 				x->parent->color = 'b';
 				bro->left->color = 'b';
